@@ -19,7 +19,6 @@ const (
 )
 
 type BrotliCompress struct {
-	w             http.ResponseWriter
 	compressLevel int
 }
 
@@ -58,7 +57,7 @@ func (b *BrotliCompress) Server() middleware.Middleware {
 						h: respWr,
 						b: bw,
 					}
-					b.w = brw
+					respWr = brw
 					respWr.Header().Del(internal.HeaderContentLength)
 					handler(ctx, req)
 				}

@@ -18,7 +18,6 @@ const (
 )
 
 type GzipCompress struct {
-	w             http.ResponseWriter
 	compressLevel int
 }
 
@@ -57,7 +56,7 @@ func (g GzipCompress) Server() middleware.Middleware {
 						h: respWr,
 						b: gw,
 					}
-					g.w = brw
+					respWr = brw
 					respWr.Header().Del(internal.HeaderContentLength)
 					handler(ctx, req)
 
