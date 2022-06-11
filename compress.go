@@ -1,15 +1,8 @@
 package compress
 
 import (
-	"context"
-
+	"github.com/czyt/compress/internal/compression"
 	"github.com/go-kratos/kratos/v2/middleware"
-)
-
-const (
-	headerAcceptEncoding  = "Accept-Encoding"
-	headerContentEncoding = "Content-Encoding"
-	headerVary            = "Vary"
 )
 
 func Server(opts ...Option) middleware.Middleware {
@@ -17,14 +10,12 @@ func Server(opts ...Option) middleware.Middleware {
 	for _, opt := range opts {
 		opt(o)
 	}
+	var compressorServer CompressorServer
 	switch o.compressionProvider {
 	case Gzip:
+		compressorServer = compression.NewGzipCompress(o.compressionLevel)
 	case Brotli:
+		compressorServer = compression.NewBrotliCompress(o.compressionLevel)
 	}
-	return func(handler middleware.Handler) middleware.Handler {
-		return func(ctx context.Context, req interface{}) (reply interface{}, err error) {
-
-			return nil, nil
-		}
-	}
+	return compressorServer.Server()
 }
