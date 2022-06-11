@@ -46,7 +46,7 @@ func (g GzipCompress) Server() middleware.Middleware {
 					return nil, err
 				}
 				headers := tr.ReplyHeader()
-				headers.Set(internal.HeaderContentEncoding, "br")
+				headers.Set(internal.HeaderContentEncoding, gzipHeader)
 				headers.Set(internal.HeaderVary, internal.HeaderAcceptEncoding)
 
 				if respWr, ok := tr.(http.ResponseWriter); ok {
