@@ -59,7 +59,7 @@ func (b *BrotliCompress) Server() middleware.Middleware {
 					}
 					respWr = brw
 					respWr.Header().Del(internal.HeaderContentLength)
-					handler(ctx, req)
+					return handler(ctx, req)
 				}
 
 			}
